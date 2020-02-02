@@ -11,7 +11,7 @@ const collectionReducer = (state=INITIAL_STATE, action) => {
         case CollectionTypes.ADD_PRODUCTS: 
             return {
                 ...state,
-                collection: action.payload
+                products: action.payload
             }
         case CollectionTypes.LOADING: 
             return {

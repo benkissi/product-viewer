@@ -5,5 +5,5 @@ const endpoints = {
 }
 export const getProducts = async () => {
     const products = await axios.get(endpoints.products)
-    console.log(products)
+    return products.data
 }

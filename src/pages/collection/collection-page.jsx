@@ -1,20 +1,22 @@
 import React, {useEffect} from 'react'
 import Product from '../../components/product/product.jsx'
-import {getProducts} from '../../api'
+import { connect } from 'react-redux'
+
+import {
+    fetchProductStart
+} from '../../redux/collection/collection-actions'
 
 import {
     Wrapper,
     Header
 } from './collection-styles'
 
-import data from '../../utils/sampleData.json'
-import {getObjectArray} from '../../utils/methods'
-
-const CollectionPage = () => {
+const CollectionPage = (props) => {
+    const {fetchProducts, products} = props
     useEffect(() => {
-        getProducts()
-    }, [])
-    const sampleData = getObjectArray(data)
+        fetchProducts()
+    }, [fetchProducts])
+    
     return(
         <Wrapper>
             <Header>
@@ -23,10 +25,18 @@ const CollectionPage = () => {
             </Header>
 
             {
-                sampleData.map(item => <Product product={item} key={item.id}/>)
+                products.map(item => <Product product={item} key={item.id}/>)
             }
         </Wrapper>
     )
 }
 
-export default CollectionPage
+const mapStateToProps = state => ({
+    products: state.collection.products
+})
+
+const mapDispatchToProps = dispatch => ({
+    fetchProducts: () => dispatch(fetchProductStart())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionPage)

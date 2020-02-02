@@ -2,7 +2,8 @@ const CollectionTypes = {
     ADD_PRODUCTS_START: 'ADD_PRODUCTS_START',
     ADD_PRODUCTS: 'ADD_PRODUCTS',
     ADD_FAIL:'ADD_FAIL',
-    LOADING: 'LOADING'
+    LOADING: 'LOADING',
+    FETCH_PRODUCTS_START: 'FETCH_PRODUCTS_START'
 }
 
 export default CollectionTypes

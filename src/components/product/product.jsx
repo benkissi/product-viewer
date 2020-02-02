@@ -3,10 +3,10 @@ import {
     Wrapper
 } from './product-style'
 
-const Product = () => {
+const Product = prop => {
     return (
         <Wrapper>
-            <div>Product</div>
+            <div>{prop.product.name}</div>
         </Wrapper>
     )
 }

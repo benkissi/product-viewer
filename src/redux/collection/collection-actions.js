@@ -1,9 +1,16 @@
 import CollectionTypes from './collection-types'
-import CollectionPage from '../../pages/collection/collection-page'
 
 export const addProducts = (products) => ({
     type: CollectionTypes.ADD_PRODUCTS,
     payload: products
+})
+
+export const fetchProductStart = () => ({
+    type: CollectionTypes.FETCH_PRODUCTS_START
+})
+
+export const addProductStart = () => ({
+    type: CollectionTypes.ADD_PRODUCTS_START
 })
 
 export const addFail = (error) => ({
