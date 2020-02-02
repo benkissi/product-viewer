@@ -22,7 +22,6 @@ export function* fetchProducts () {
         Object.keys(normalizedProducts).forEach(item => {
             if(products[item]){
                 delete normalizedProducts[item]
-                console.log(item)
             }
         })
         const combined = Object.assign({},products, normalizedProducts)
@@ -37,7 +36,6 @@ export function* fetchProducts () {
 
 function* addProduct ({payload}) {
     yield put(isLoading(true))
-    yield console.log('add product')
     const products = yield select(selectProducts)
     products[payload.id]=payload
     yield put(addProducts(products))
