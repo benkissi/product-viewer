@@ -6,12 +6,13 @@ import Button from '../../components/button/button-component'
 import Modal from '../../components/modal/modal-component'
 import AddProduct from '../../components/addProduct/form'
 
-import {getObjectArray, getLatestPrice} from '../../utils/methods'
+import {getObjectArray, generateId} from '../../utils/methods'
 
 import {
     fetchProductStart,
     addProductStart,
-    deleteProductStart
+    deleteProductStart,
+    editStart
 } from '../../redux/collection/collection-actions'
 
 import {
@@ -20,24 +21,29 @@ import {
 } from './collection-styles'
 
 const CollectionPage = (props) => {
-    const {fetchProducts, products, addProduct, removeProduct} = props
+    const {fetchProducts, products, addProduct, removeProduct, saveEdits} = props
     const [state, setState] = useState({
-        openModal: false
+        openModal: false,
+        edit: null
     })
     useEffect(() => {
         fetchProducts()
-    }, [fetchProducts])
+    }, [])
+
+    useEffect(() => {
+        if(state.edit){
+            toggleModal()
+        }
+       
+    }, [state.edit])
     
     const productArray = getObjectArray(products)
 
     const toggleModal = () => {
         setState({
+            ...state,
             openModal: !state.openModal
         })
-    }
-
-    const generateId = () => {
-        return Math.random().toString(36).substr(2, 9);
     }
 
     const handleAddProduct = (details) => {
@@ -57,10 +63,25 @@ const CollectionPage = (props) => {
         toggleModal()
     }
 
+    const handleSaveEdits = (id, details) => {
+        details.id=id
+        saveEdits(details)
+        toggleModal()
+    }
+
+    const handleEdit = (id, name, price) => {
+        setState({
+            ...state,
+            edit: {
+                id, name, price
+            }
+        })
+    }
+
     return(
         <Wrapper>
             <Modal open={state.openModal} toggle={toggleModal}>
-                <AddProduct add={handleAddProduct} title="Add a product"/>
+                <AddProduct saveEdits={handleSaveEdits} add={handleAddProduct} edit={state.edit} title="Add Product"/>
             </Modal>
             <Header>
                 <div>Name</div>
@@ -70,7 +91,7 @@ const CollectionPage = (props) => {
             </Header>
 
             {
-                productArray.map(item => <Product remove={removeProduct} product={item} key={item.id}/>)
+                productArray.map(item => <Product handleEdit={handleEdit} onClick={toggleModal} remove={removeProduct} product={item} key={item.id}/>)
             }
             <Button onClick={toggleModal} text="Add a product"/>
         </Wrapper>
@@ -84,7 +105,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     fetchProducts: () => dispatch(fetchProductStart()),
     addProduct: (product)=> dispatch(addProductStart(product)),
-    removeProduct: (id) => dispatch(deleteProductStart(id))
+    removeProduct: (id) => dispatch(deleteProductStart(id)),
+    saveEdits: (details) => dispatch(editStart(details))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionPage)

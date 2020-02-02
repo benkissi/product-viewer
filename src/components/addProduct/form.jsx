@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Input from '../Input/input-component'
 import Button from '../button/button-component'
 
@@ -9,8 +9,24 @@ import {
 const AddProduct = props => {
     const [state, setState] = useState({
         productName: '',
-        price: ''
+        price: '',
+        edit: props.edit
     })
+
+    useEffect(() => {
+        if(props.edit){
+            setState({
+                ...state,
+                edit: props.edit,
+                productName: props.edit.name,
+                price: props.edit.price
+            })
+            
+        }
+    }, [props.edit])
+    
+
+    
 
     const onInputChange = (e) => {
         e.preventDefault()
@@ -22,7 +38,7 @@ const AddProduct = props => {
     }
 
     const addProduct = () => {
-        const isEmpty = Object.values(state).some(field => field === null || field === '')
+        const isEmpty = state.productName === '' && state.price === ''
         if(isEmpty){
             alert('fields cannot be empty')
         }else{
@@ -31,7 +47,7 @@ const AddProduct = props => {
                 price: state.price
             }
 
-            props.add(details)
+            state.edit? props.saveEdits(state.edit.id, details) :props.add(details)
             setState({
                 productName:'',
                 price: ''
@@ -42,10 +58,10 @@ const AddProduct = props => {
 
     return (
         <Wrapper>
-            <h2>{props.title}</h2>
+            <h2>{props.title }</h2>
             <Input name="productName" value={state.productName||''} onChange={onInputChange} placeholder="Product name" type="text"/>
             <Input name="price" value={state.price||''} onChange={onInputChange} placeholder="Product price" type="number"/>
-            <Button onClick={addProduct} width="100%"text="Add"/>
+            <Button onClick={addProduct} width="100%" text={state.edit? 'Edit': 'Add'}/>
         </Wrapper>
     
     )
