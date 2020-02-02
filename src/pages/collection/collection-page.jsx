@@ -6,9 +6,12 @@ import Button from '../../components/button/button-component'
 import Modal from '../../components/modal/modal-component'
 import AddProduct from '../../components/addProduct/form'
 
+import {getObjectArray, getLatestPrice} from '../../utils/methods'
+
 import {
     fetchProductStart,
-    addProductStart
+    addProductStart,
+    deleteProductStart
 } from '../../redux/collection/collection-actions'
 
 import {
@@ -17,7 +20,7 @@ import {
 } from './collection-styles'
 
 const CollectionPage = (props) => {
-    const {fetchProducts, products, addProduct} = props
+    const {fetchProducts, products, addProduct, removeProduct} = props
     const [state, setState] = useState({
         openModal: false
     })
@@ -25,6 +28,8 @@ const CollectionPage = (props) => {
         fetchProducts()
     }, [fetchProducts])
     
+    const productArray = getObjectArray(products)
+
     const toggleModal = () => {
         setState({
             openModal: !state.openModal
@@ -65,7 +70,7 @@ const CollectionPage = (props) => {
             </Header>
 
             {
-                products.map(item => <Product product={item} key={item.id}/>)
+                productArray.map(item => <Product remove={removeProduct} product={item} key={item.id}/>)
             }
             <Button onClick={toggleModal} text="Add a product"/>
         </Wrapper>
@@ -78,7 +83,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     fetchProducts: () => dispatch(fetchProductStart()),
-    addProduct: (product)=> dispatch(addProductStart(product))
+    addProduct: (product)=> dispatch(addProductStart(product)),
+    removeProduct: (id) => dispatch(deleteProductStart(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionPage)

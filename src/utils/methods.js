@@ -18,3 +18,12 @@ export const getLatestPrice = prices => {
 
   return recentPrice
 }
+
+export const normalize = products => {
+  const productArray = getObjectArray(products)
+  return productArray.reduce((newObject, product) => {
+    newObject[product.id] = product;
+    return newObject
+   }, {}  )
+
+}

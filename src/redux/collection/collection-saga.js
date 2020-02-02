@@ -10,15 +10,14 @@ import {
 import { selectProducts } from './collection-selectors'
 
 import {getProducts} from '../../api'
-import {getObjectArray, getLatestPrice} from '../../utils/methods'
+import { normalize} from '../../utils/methods'
 
 export function* fetchProducts () {
     try{
         yield put(isLoading(true))
         const data = yield getProducts()
-        const products = getObjectArray(data.products)
-        yield put(addProducts(products))
-        yield getLatestPrice(products[0].prices)
+        const normalizedProducts = normalize(data.products)
+        yield put(addProducts(normalizedProducts))
         yield put(isLoading(false))
     }catch(e){
         yield put(isLoading(false))
@@ -31,8 +30,17 @@ function* addProduct ({payload}) {
     yield put(isLoading(true))
     yield console.log('add product')
     const products = yield select(selectProducts)
-    products.unshift(payload)
+    products[payload.id]=payload
     yield put(addProducts(products))
+    yield put(isLoading(false))
+}
+
+function* deleteProduct ({payload}) {
+    yield put(isLoading(true))
+    const products = yield select(selectProducts)
+    yield delete products[payload]
+    const newProducts = yield Object.assign({}, products)
+    yield put(addProducts(newProducts))
     yield put(isLoading(false))
 }
 
@@ -44,9 +52,14 @@ export function* fetchProductStart() {
     yield takeLatest(CollectionTypes.FETCH_PRODUCTS_START, fetchProducts)
 }
 
+export function* deleteProductStart() {
+    yield takeLatest(CollectionTypes.DELETE_PRODUCT_START, deleteProduct)
+}
+
 export function* collectionSagas() {
     yield all([
         call(fetchProductStart),
-        call(addProductStart)
+        call(addProductStart),
+        call(deleteProductStart)
     ])
 }

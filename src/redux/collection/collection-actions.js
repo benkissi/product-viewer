@@ -14,7 +14,7 @@ export const addProductStart = details => ({
     payload: details
 })
 
-export const deleteProduct = id => ({
+export const deleteProductStart = id => ({
     type: CollectionTypes.DELETE_PRODUCT_START,
     payload: id
 })
