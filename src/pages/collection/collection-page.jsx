@@ -2,6 +2,8 @@ import React, {useEffect} from 'react'
 import Product from '../../components/product/product.jsx'
 import { connect } from 'react-redux'
 
+import Button from '../../components/button/button-component'
+
 import {
     fetchProductStart
 } from '../../redux/collection/collection-actions'
@@ -22,11 +24,14 @@ const CollectionPage = (props) => {
             <Header>
                 <div>Name</div>
                 <div>Price</div>
+                <div>Edit</div>
+                <div>Delete</div>
             </Header>
 
             {
                 products.map(item => <Product product={item} key={item.id}/>)
             }
+            <Button onClick={()=>console.log('clicked')} text="Add a product"/>
         </Wrapper>
     )
 }

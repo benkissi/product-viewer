@@ -1,0 +1,15 @@
+import React from 'react'
+
+import { ButtonStyle, Wrapper } from './button-styles'
+
+
+const Button = (props) => {
+    return (
+        <Wrapper>
+            <ButtonStyle {...props}>{props.text}</ ButtonStyle>
+        </Wrapper>
+
+    )
+}
+
+export default Button

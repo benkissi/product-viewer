@@ -8,7 +8,7 @@ import {
 } from './collection-actions'
 
 import {getProducts} from '../../api'
-import {getObjectArray} from '../../utils/methods'
+import {getObjectArray, getLatestPrice} from '../../utils/methods'
 
 export function* fetchProducts () {
     try{
@@ -16,6 +16,7 @@ export function* fetchProducts () {
         const data = yield getProducts()
         const products = getObjectArray(data.products)
         yield put(addProducts(products))
+        yield getLatestPrice(products[0].prices)
         yield put(isLoading(false))
     }catch(e){
         yield put(isLoading(false))
