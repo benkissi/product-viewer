@@ -9,8 +9,14 @@ export const fetchProductStart = () => ({
     type: CollectionTypes.FETCH_PRODUCTS_START
 })
 
-export const addProductStart = () => ({
-    type: CollectionTypes.ADD_PRODUCTS_START
+export const addProductStart = details => ({
+    type: CollectionTypes.ADD_PRODUCTS_START,
+    payload: details
+})
+
+export const deleteProduct = id => ({
+    type: CollectionTypes.DELETE_PRODUCT_START,
+    payload: id
 })
 
 export const addFail = (error) => ({

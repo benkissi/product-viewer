@@ -1,11 +1,14 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Product from '../../components/product/product.jsx'
 import { connect } from 'react-redux'
 
 import Button from '../../components/button/button-component'
+import Modal from '../../components/modal/modal-component'
+import AddProduct from '../../components/addProduct/form'
 
 import {
-    fetchProductStart
+    fetchProductStart,
+    addProductStart
 } from '../../redux/collection/collection-actions'
 
 import {
@@ -14,13 +17,46 @@ import {
 } from './collection-styles'
 
 const CollectionPage = (props) => {
-    const {fetchProducts, products} = props
+    const {fetchProducts, products, addProduct} = props
+    const [state, setState] = useState({
+        openModal: false
+    })
     useEffect(() => {
         fetchProducts()
     }, [fetchProducts])
     
+    const toggleModal = () => {
+        setState({
+            openModal: !state.openModal
+        })
+    }
+
+    const generateId = () => {
+        return Math.random().toString(36).substr(2, 9);
+    }
+
+    const handleAddProduct = (details) => {
+        details = {
+            id: generateId(),
+            name: details.name,
+            prices: [
+                {
+                    id: generateId(),
+                    price: details.price,
+                    date: new Date()
+                }
+            ]
+        }
+
+        addProduct(details)
+        toggleModal()
+    }
+
     return(
         <Wrapper>
+            <Modal open={state.openModal} toggle={toggleModal}>
+                <AddProduct add={handleAddProduct} title="Add a product"/>
+            </Modal>
             <Header>
                 <div>Name</div>
                 <div>Price</div>
@@ -31,7 +67,7 @@ const CollectionPage = (props) => {
             {
                 products.map(item => <Product product={item} key={item.id}/>)
             }
-            <Button onClick={()=>console.log('clicked')} text="Add a product"/>
+            <Button onClick={toggleModal} text="Add a product"/>
         </Wrapper>
     )
 }
@@ -41,7 +77,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    fetchProducts: () => dispatch(fetchProductStart())
+    fetchProducts: () => dispatch(fetchProductStart()),
+    addProduct: (product)=> dispatch(addProductStart(product))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionPage)

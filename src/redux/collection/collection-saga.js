@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all, take } from 'redux-saga/effects'
+import { takeLatest, call, put, all, select } from 'redux-saga/effects'
 
 import CollectionTypes from './collection-types'
 import {
@@ -6,6 +6,8 @@ import {
     isLoading,
     addFail
 } from './collection-actions'
+
+import { selectProducts } from './collection-selectors'
 
 import {getProducts} from '../../api'
 import {getObjectArray, getLatestPrice} from '../../utils/methods'
@@ -25,13 +27,18 @@ export function* fetchProducts () {
     
 }
 
-// function* addProduct () {
-//     yield console.log('add product')
-// }
+function* addProduct ({payload}) {
+    yield put(isLoading(true))
+    yield console.log('add product')
+    const products = yield select(selectProducts)
+    products.unshift(payload)
+    yield put(addProducts(products))
+    yield put(isLoading(false))
+}
 
-// export function* addProductStart () {
-//     takeLatest(CollectionTypes.ADD_PRODUCTS_START, addProduct)
-// }
+export function* addProductStart () {
+    yield takeLatest(CollectionTypes.ADD_PRODUCTS_START, addProduct)
+}
 
 export function* fetchProductStart() {
     yield takeLatest(CollectionTypes.FETCH_PRODUCTS_START, fetchProducts)
@@ -39,6 +46,7 @@ export function* fetchProductStart() {
 
 export function* collectionSagas() {
     yield all([
-        call(fetchProductStart)
+        call(fetchProductStart),
+        call(addProductStart)
     ])
 }

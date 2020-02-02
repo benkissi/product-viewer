@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Wrapper = styled.div`
     display: flex;
     justify-content: center;
-    width: 40%;
+    width: ${props => props.width? props.width : '40%'};
     height: fit-content !important;
     position: relative;
     margin-bottom: 20px;
