@@ -1,10 +1,16 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
+import CollectionPage from './pages/collection/collection-page.jsx'
 
 function App() {
   return (
     <div className="App">
-      <h1>Hi</h1>
+      <Router>
+        <Switch>
+          <Route exact path='/' component={CollectionPage} />
+        </Switch>
+      </Router>
     </div>
   );
 }
