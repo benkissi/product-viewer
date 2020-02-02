@@ -18,7 +18,14 @@ export function* fetchProducts () {
         const data = yield getProducts()
         const normalizedProducts = normalize(data.products)
         const products = yield select(selectProducts)
-        const combined = Object.assign(products, normalizedProducts)
+
+        Object.keys(normalizedProducts).forEach(item => {
+            if(products[item]){
+                delete normalizedProducts[item]
+                console.log(item)
+            }
+        })
+        const combined = Object.assign({},products, normalizedProducts)
         yield put(addProducts(combined))
         yield put(isLoading(false))
     }catch(e){

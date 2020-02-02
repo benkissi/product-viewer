@@ -13,7 +13,7 @@ export const getLatestPrice = prices => {
 
  const recentPrice = prices.filter( price => { 
   var date = new Date( price.date ); 
-  return date.getTime() == recentDate.getTime();
+  return date.getTime() === recentDate.getTime();
 })[0];
 
   return recentPrice
