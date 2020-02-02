@@ -36,6 +36,15 @@ const CollectionPage = (props) => {
         }
        
     }, [state.edit])
+
+    useEffect(() => {
+        if(state.openModal === false){
+            setState({
+                ...state,
+                edit: null
+            })
+        }
+    }, [state.openModal])
     
     const productArray = getObjectArray(products)
 
