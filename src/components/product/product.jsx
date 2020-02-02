@@ -6,7 +6,7 @@ import {
 const Product = () => {
     return (
         <Wrapper>
-            <div> Product</div>
+            <div>Product</div>
         </Wrapper>
     )
 }
