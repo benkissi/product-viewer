@@ -58,7 +58,7 @@ const AddProduct = props => {
 
     return (
         <Wrapper>
-            <h2>{props.title }</h2>
+            <h2>{state.edit? 'Edit Product': 'Add Product'}</h2>
             <Input name="productName" value={state.productName||''} onChange={onInputChange} placeholder="Product name" type="text"/>
             <Input name="price" value={state.price||''} onChange={onInputChange} placeholder="Product price" type="number"/>
             <Button onClick={addProduct} width="100%" text={state.edit? 'Edit': 'Add'}/>

@@ -80,7 +80,7 @@ const CollectionPage = (props) => {
 
     return(
         <Wrapper>
-            <Modal open={state.openModal} toggle={toggleModal}>
+            <Modal width="medium" open={state.openModal} toggle={toggleModal}>
                 <AddProduct saveEdits={handleSaveEdits} add={handleAddProduct} edit={state.edit} title="Add Product"/>
             </Modal>
             <Header>

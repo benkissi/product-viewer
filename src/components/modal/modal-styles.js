@@ -16,21 +16,6 @@ export const Wrapper = styled.div`
 export const Content = styled.div`
     background-color: white;
     margin: auto;
-    padding: 5px;
-    width: ${(props) => props.width ? props.width : "40%"};
-
-    .close {
-        color: #aaaaaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-
-        :hover,
-        :focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    }
-
+    padding: 0 20px 0 20px;
+    width: ${(props) => props.width ? props.width : "70%"};
 `

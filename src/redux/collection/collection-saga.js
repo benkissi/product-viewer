@@ -17,7 +17,9 @@ export function* fetchProducts () {
         yield put(isLoading(true))
         const data = yield getProducts()
         const normalizedProducts = normalize(data.products)
-        yield put(addProducts(normalizedProducts))
+        const products = yield select(selectProducts)
+        const combined = Object.assign(products, normalizedProducts)
+        yield put(addProducts(combined))
         yield put(isLoading(false))
     }catch(e){
         yield put(isLoading(false))
